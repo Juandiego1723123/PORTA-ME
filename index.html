@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Juan Diego Edna - Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: "#137fec",
+                            '50': '#eff6ff',
+                            '100': '#dbeafe',
+                            '200': '#bfdbfe',
+                            '300': '#93c5fd',
+                            '400': '#60a5fa',
+                            '500': '#3b82f6',
+                            '600': '#2563eb',
+                            '700': '#1d4ed8',
+                            '800': '#1e40af',
+                            '900': '#1e3a8a',
+                            '950': '#172554',
+                        },
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a1017",
+                        "card-dark": "#101922"
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-300 antialiased">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const langToggle = document.getElementById('lang-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('span');
+        const langText = langToggle.querySelector('span');
+
+        // Language translations dictionary
+        const translations = {
+            en: {
+                'nav-profile': 'Profile',
+                'nav-skills': 'Skills',
+                'nav-projects': 'Projects',
+                'nav-contact': 'Contact',
+                'home-subtitle': 'Systems Engineering Student',
+                'home-title': "Hi, I'm Juan Diego. Aspiring Web & AI Developer.",
+                'home-description': "I build efficient, intelligent, and user-friendly solutions for the web, merging my passion for software engineering with the power of artificial intelligence.",
+                'home-contact': 'Contact Me',
+                'home-projects': 'My Projects',
+                'profile-title': 'Professional Profile',
+                'profile-desc1': 'I am a passionate Systems Engineering student with a strong interest in full-stack web development and artificial intelligence. My goal is to create innovative and user-friendly applications that solve real-world problems. I thrive on learning new technologies and applying them to challenging projects.',
+                'profile-desc2': 'My academic background has provided me with a solid foundation in software engineering principles, data structures, and algorithms. I am constantly exploring new frameworks and tools to expand my skill set and stay at the forefront of technology.',
+                'skills-title': 'Skills & Tools',
+                'skills-description': 'Technologies and tools I use daily to build efficient and effective solutions.',
+                'projects-title': 'Featured Projects',
+                'projects-description': 'A selection of projects that showcase my passion for building and learning.',
+                'project1-title': 'AI-Powered Data Visualizer',
+                'project1-description': 'A web application that uses machine learning to generate interactive visualizations from uploaded datasets. Built with React, D3.js, and a Python backend.',
+                'project2-title': 'E-commerce Platform API',
+                'project2-description': 'A robust RESTful API for an e-commerce website, featuring product management, user authentication, and order processing. Developed with Node.js, Express, and PostgreSQL.',
+                'contact-title': "Let's Connect!",
+                'contact-description': "I'm always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out.",
+                'contact-name': 'Name',
+                'contact-email': 'Email',
+                'contact-message': 'Message',
+                'contact-send': 'Send Message',
+                'lang-en': 'EN',
+                'lang-es': 'ES'
+            },
+            es: {
+                'nav-profile': 'Perfil',
+                'nav-skills': 'Habilidades',
+                'nav-projects': 'Proyectos',
+                'nav-contact': 'Contacto',
+                'home-subtitle': 'Estudiante de Ingeniería de Sistemas',
+                'home-title': 'Hola, soy Juan Diego. Aspirante a desarrollador Web e Inteligencia Artificial.',
+                'home-description': 'Construyo soluciones eficientes, inteligentes y fáciles de usar para la web, combinando mi pasión por la ingeniería de software con el poder de la inteligencia artificial.',
+                'home-contact': 'Contáctame',
+                'home-projects': 'Mis Proyectos',
+                'profile-title': 'Perfil Profesional',
+                'profile-desc1': 'Soy un apasionado estudiante de Ingeniería de Sistemas con un fuerte interés en desarrollo web full-stack e inteligencia artificial. Mi objetivo es crear aplicaciones innovadoras y fáciles de usar que resuelvan problemas reales. Me encanta aprender nuevas tecnologías y aplicarlas en proyectos desafiantes.',
+                'profile-desc2': 'Mi formación académica me ha brindado una sólida base en principios de ingeniería de software, estructuras de datos y algoritmos. Estoy en constante exploración de nuevos frameworks y herramientas para ampliar mis habilidades y mantenerme a la vanguardia de la tecnología.',
+                'skills-title': 'Habilidades y Herramientas',
+                'skills-description': 'Tecnologías y herramientas que uso a diario para construir soluciones eficientes y efectivas.',
+                'projects-title': 'Proyectos Destacados',
+                'projects-description': 'Una selección de proyectos que muestran mi pasión por construir y aprender.',
+                'project1-title': 'Visualizador de Datos con IA',
+                'project1-description': 'Una aplicación web que utiliza aprendizaje automático para generar visualizaciones interactivas a partir de datos cargados. Construido con React, D3.js y un backend en Python.',
+                'project2-title': 'API para Plataforma de Comercio Electrónico',
+                'project2-description': 'Una API RESTful robusta para un sitio de comercio electrónico, con gestión de productos, autenticación de usuarios y procesamiento de pedidos. Desarrollada con Node.js, Express y PostgreSQL.',
+                'contact-title': '¡Conectemos!',
+                'contact-description': 'Estoy siempre abierto a discutir nuevos proyectos, ideas creativas u oportunidades. No dudes en contactarme.',
+                'contact-name': 'Nombre',
+                'contact-email': 'Correo Electrónico',
+                'contact-message': 'Mensaje',
+                'contact-send': 'Enviar Mensaje',
+                'lang-en': 'EN',
+                'lang-es': 'ES'
+            }
+        };
+
+        // Function to update text content by language
+        function updateLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName.toLowerCase() === 'input' || element.tagName.toLowerCase() === 'textarea') {
+                        if (element.placeholder !== undefined) {
+                            element.placeholder = translations[lang][key];
+                        }
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            // Update lang toggle button text
+            if (lang === 'en') {
+                langText.textContent = translations['es']['lang-es']; // shows 'ES' as option to switch to Spanish
+            } else {
+                langText.textContent = translations['en']['lang-en']; // shows 'EN' as option to switch to English
+            }
+            localStorage.setItem('language', lang);
+        }
+
+        // Get saved language or default to English
+        let currentLanguage = localStorage.getItem('language') || 'en';
+        updateLanguage(currentLanguage);
+
+        // Language toggle button event
+        langToggle.addEventListener('click', function() {
+            currentLanguage = currentLanguage === 'en' ? 'es' : 'en';
+            updateLanguage(currentLanguage);
+        });
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'light') {
+            html.classList.remove('dark');
+            themeIcon.textContent = 'light_mode';
+        } else {
+            html.classList.add('dark');
+            themeIcon.textContent = 'dark_mode';
+        }
+
+        // Theme toggle event
+        themeToggle.addEventListener('click', function() {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.textContent = 'light_mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                themeIcon.textContent = 'dark_mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // EmailJS configuration
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+
+        // Form submission handler
+        const contactForm = document.getElementById('contact-form');
+        const submitButton = document.querySelector('#contact-form button[type="submit"]');
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message,
+                to_email: 'Jdeswork1723@gmail.com'
+            };
+
+            // Change button to sending state
+            submitButton.textContent = translations[currentLanguage]['contact-send'] || 'Sending...';
+            submitButton.disabled = true;
+            submitButton.classList.add('sending');
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    // Change to sent state
+                    submitButton.textContent = translations[currentLanguage]['contact-send'] || 'Sent!';
+                    submitButton.classList.remove('sending');
+                    submitButton.classList.add('sent');
+                    contactForm.reset();
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.textContent = translations[currentLanguage]['contact-send'] || 'Send Message';
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('sent');
+                    }, 3000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    // Change to failed state
+                    submitButton.textContent = 'Failed';
+                    submitButton.classList.remove('sending');
+                    submitButton.classList.add('failed');
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.textContent = translations[currentLanguage]['contact-send'] || 'Send Message';
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('failed');
+                    }, 3000);
+                });
+        });
+    });
+</script>
+<div class="relative flex min-h-screen w-full flex-col" id="root">
+<header class="sticky top-0 z-50 flex items-center justify-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-700/50">
+<nav class="flex w-full max-w-6xl items-center justify-between p-4">
+<a class="flex items-center gap-2" href="#">
+<div class="size-7 text-primary">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
+</svg>
+</div>
+<span class="text-lg font-bold text-gray-900 dark:text-white">Juan Diego Edna</span>
+</a>
+<div class="hidden items-center gap-8 md:flex">
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#profile" data-lang="nav-profile">Profile</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#skills" data-lang="nav-skills">Skills</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#projects" data-lang="nav-projects">Projects</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#contact" data-lang="nav-contact">Contact</a>
+</div>
+<button id="theme-toggle" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+<span class="material-symbols-outlined text-gray-800 dark:text-gray-200">dark_mode</span>
+</button>
+<button id="lang-toggle" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+<span class="text-gray-800 dark:text-gray-200">EN</span>
+</button>
+<a class="hidden min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 button-3d md:flex" href="#contact">
+<span class="truncate">Get In Touch</span>
+</a>
+</nav>
+</header>
+<main class="flex w-full grow flex-col items-center">
+<div class="w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+<section class="flex min-h-[calc(100vh-80px)] items-center py-16" id="home">
+<div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+<div class="flex flex-col justify-center text-center lg:text-left">
+<h2 class="text-lg font-medium text-primary sm:text-xl" data-lang="home-subtitle">Systems Engineering Student</h2>
+<h1 class="mt-2 text-4xl font-black tracking-tighter text-gray-900 dark:text-white sm:text-5xl md:text-6xl" data-lang="home-title">Hi, I'm Juan Diego. Aspiring Web &amp; AI Developer.</h1>
+<p class="mt-6 max-w-xl text-base text-gray-600 dark:text-gray-400" data-lang="home-description">
+                                I build efficient, intelligent, and user-friendly solutions for the web, merging my passion for software engineering with the power of artificial intelligence.
+                            </p>
+<div class="mt-10 flex flex-wrap justify-center gap-4 lg:justify-start">
+<a class="flex min-w-[120px] items-center justify-center gap-2 button-3d px-5 py-3 text-sm" href="#contact" data-lang="home-contact">
+<span>Contact Me</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+<a class="flex min-w-[120px] items-center justify-center button-3d px-5 py-3 text-sm" href="#projects" data-lang="home-projects">My Projects</a>
+</div>
+</div>
+<div class="relative flex items-center justify-center lg:col-span-1">
+<div class="aspect-square w-full max-w-sm rounded-full bg-cover bg-center bg-no-repeat ring-8 ring-primary/10 dark:ring-primary/20" data-alt="Professional headshot of Juan Diego Edna" style="background-image: url('images/Juan ( imagen ).jpg');"></div>
+</div>
+</div>
+</section>
+<section class="py-24" id="profile">
+<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5 lg:gap-16">
+<div class="relative hidden lg:col-span-2 lg:block">
+<div class="aspect-square w-full rotate-3 rounded-xl bg-cover bg-center bg-no-repeat transition-transform hover:rotate-0 hover:scale-105" data-alt="Abstract image of a laptop on a desk with glowing lights, representing technology and development." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRgxyeGFxgL-IceGXy5gxz5u0YXkfKAgzSanAl5-bo5X64z99iOEFDMVsVjMNhHr71b3ghYYOpC9BfPMR4SKmS0EbQG57Ki6KIXgD0jo_TGuhPzRZJuR3EKzM8C9WrjCSG9gMBoNr6EDWjugIGqCL_XW4QyYdpcDEU4u-wo9ACLmu1QG36EU-e3yoK6YGyGNrNgUZoja5YkaHKRIVlw8RoD_mnFAEnLxZI2YzgAUVEz1QID57V-IXBgrGoGgiAaT-F45jwHqPIhRI');"></div>
+</div>
+<div class="lg:col-span-3">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl" data-lang="profile-title">Professional Profile</h2>
+<p class="mt-6 text-base leading-relaxed text-gray-600 dark:text-gray-400" data-lang="profile-desc1">
+                                I am a passionate Systems Engineering student with a strong interest in full-stack web development and artificial intelligence. My goal is to create innovative and user-friendly applications that solve real-world problems. I thrive on learning new technologies and applying them to challenging projects.
+                            </p>
+<p class="mt-4 text-base leading-relaxed text-gray-600 dark:text-gray-400" data-lang="profile-desc2">
+                                My academic background has provided me with a solid foundation in software engineering principles, data structures, and algorithms. I am constantly exploring new frameworks and tools to expand my skill set and stay at the forefront of technology.
+                            </p>
+</div>
+</div>
+</section>
+<section class="py-12 text-center" id="skills">
+  <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Skills &amp; Tools</h2>
+  <p class="mt-2 mx-auto max-w-xl text-sm text-gray-600 dark:text-gray-400">Technologies and tools I use daily to build efficient and effective solutions.</p>
+  <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="Python logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHlehDjUv8NDBiGdZIGjbeihHoVuVREKwdhjos8V2DLF86-pI1jtFVIeQLlE6wdBQd7TnhG9CUEB6dLQ4aHkMpP6RMSNfbSJv9-PoRxqIkKyoC_DGLueUC0LD4KSuZdxZjRHQTgDDdy09PjNVkSQ3qbpNZQULvezuCbZIW6WEi9SvhcumJYfTj2ROPQy1XaeVfVrdkS1aJ5JXBwh0gPeFbnapcQwR8o6nDSGW62PMjLgeExe_5Wk4vu4UYalYNaCaj39_bdyL9wQw"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">Python</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="JavaScript logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-VyfbQWUhYFHPtUM0mJMC59UdPsHocdxtKn9gAUfIvko33wg_ThHlb1vK3edpnlnEuPUeTl15BMWAm5U_UP-D7QV8x-P7ZIUr7-I1v-svURRVhJtvqwRxnB22GRgdwyxaMhHsVbfxXYJsxc1WJAvpQncgmR-x87v0DJOkBgZWIKZOIwg_eZGmiZpWTPhP3gLqKJ9Bpei7Vq2LomdDqcT3jFOohzfk_tt3G9n9PWoLSaW6yMMkOS-2MxCOsIoxcn2VDHTLGC9M13A"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">JavaScript</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="React logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84LPm6wDbpGhS-SV8gZelybr_blH3-_A6n1_j2Yw3Sfp9fB84hkv2OY3i43cL7X9IARrItBhi1L7pZfy-HhZlnH_9n7GrgG7EszRRXgblVpK0ePIgmuNYlBrZxMdrrgyXTeLPUsyyHIM3IGCXjmTsZN3jOI91c50pti2GEitaY7BSUQ9BU0HiIFwkak2Qz-ZS3lrZwghBac_5KZevFacYaBodFMZhZXdDYoIZRY4ua4qsrbGdjD5TaRnLn3KLBQW64FNgKx6_c70"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">React</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="Node.js logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIxwaOwoO2pJwral1s0oz50SQjXmaThGhPip8BJQExXFiSc-G3-s0nyy9w8f3-3Nwi1vcEPKuq_BBAg6MaPTznNBEOG2HzsjzQLH3YJ-ZAfMDvG3M76W_QQu7kFMNrRCI4zSf6TeUVUJFXiul11xGnhwiJ4d15544URzUZCEetOQQuzDYNABxuyv4lS_je_MlDaY6qc8aHGsIP_wlFqxgHFtpEfhgSSDdXFQ_P50m0hito63PSkcH9mJD4eDONjahRaJPHzhRvaI"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">Node.js</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="SQL logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmmeWgOf9Mx3mWtxIkXJN_6gjUAbY7NomtnhHMqPNb_cVX_QNBzwdLGyQ6WGIbRbbVDRKV7sV-QFUBTBojk6tv0a34p1Yy-KHB9H1UMQhGyKNwS_0oFz7zAYshnrsA1KVNtPv0MhaUAcQTvm9thuJExvDbzAbHX5RfH3M8dT5lbllqjr4u3ReFod-uTOtEKECg5PkAMXtxF0rBy6-AuGpkckMFRsXUh7d9UjtAjs9NH25RvAQif_CpLpvkPAM1mdSAZ92g4g1rQgo"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">SQL</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="Git logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJIQSKjq1qBY3OkU8FpybOG3DXMRPvT_EiBWiu8pUh5_5aZe5EEO_GfDo1MfgzF8uG0tjpmosjjk-nXyjLw6JXW0LoZUQxq7kNa2fAfn-uZQHRI5P0mpNLazjZxyrCh853FTsPOiINFyx4UmqBHUmdhIyDQD4HlDIK5UdubHBxGq698WCRaKtKpWlX59cCNJoc7qR0-_Npp1Fd4r1zgCpIPyHB2fojpmLwGZBoBNs6IJhuI63f-ZVskqaYvNP0VCnr8xksNiXGQ24"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">Git</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="HTML5 logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrdqjaGj5wt2aQVB-eHh6jOzoNSh_kZmdKIu5SmZGUZdfVMAXsCBnnumAk_DodePg8jnKJ2oCJVGP9OomJdRZ0An8qInLlWOGVimsc4KHkQngIq6nLG5UYFOwR_RjJu28aVlHyVd1VUPqm_h_Iqk0Pjv7LABLk8VLbEsmNUihBl6MQnxQgqH___7KNzf8vHBqajvaXi2MvSuLYmjvxHayvnu5G53EidufvssamPmSppbs9MbgZmn6H-Nx0eEBt8-k3UcjbES3YFTQ"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">HTML5</span>
+    </div>
+    <div class="skill-item flex flex-col items-center justify-center gap-2 rounded-xl border border-gray-200/80 p-4 transition-all hover:bg-gray-100 dark:border-gray-700/60 dark:hover:bg-card-dark">
+      <img alt="Tailwind CSS logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-a4c1_cQqSXEpbkuuj24kM2EtlyvJwDjCAN3auIMbJpmydTtzfOtCsoD73ud3g66I2EvE5FfNB6iLJ-md38sBmt1Qj4uqWQTtKItwPLwZALJseINDaY607OFTPZQxYTYvJM8o7sRHuHo0JW1SftNi9lOxC27VrrKTgLRdPeVlLVGPWG946b50QzD9B8Ru8Uvw8swbeeef7Qn-aSloG0xhEAY1hsc_KMjdwsIOGDPYjP9jvlayJbY-KRAAa1RiESjs5qa2ImoxxKo"/>
+      <span class="font-semibold text-gray-700 dark:text-gray-300 text-xs">Tailwind CSS</span>
+    </div>
+  </div>
+</section>
+<section class="py-24" id="projects">
+<div class="text-center">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl" data-lang="projects-title">Featured Projects</h2>
+<p class="mt-4 mx-auto max-w-2xl text-base text-gray-600 dark:text-gray-400" data-lang="projects-description">A selection of projects that showcase my passion for building and learning.</p>
+</div>
+<div class="mt-16 grid grid-cols-1 gap-12 md:grid-cols-2">
+<a class="group block" href="#">
+<div class="flex flex-col overflow-hidden rounded-xl border border-gray-200/80 bg-white shadow-md transition-all duration-300 hover:border-primary hover:shadow-2xl dark:border-gray-700/60 dark:bg-card-dark dark:hover:border-primary/70">
+<div class="overflow-hidden">
+<div class="aspect-video w-full bg-cover bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105" data-alt="Screenshot of a data dashboard project interface" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfH5BMS5DOhAm1N-iEkOms-PX1h9GYZ4HQ_qz29rBquBtw20uKtExfnRUm5vbWeZfPBpYaREliqhUmGF5ZeeyAyuUt22ufuwr66mhCekyW45fxuBvWPKg-cwNCJoDUjM-kNw-CsWUBXKryfDbdBtmW7uBFnJAp4Lhspp9DqPG7iUMKuD4wmvQMnx--hEDTfDpxNj3EeEdAGa5QBNrs2LYSda2HOXt-ZItsKTMfnf23o8tVTZ1I1RexDuxcboVhS0KpjYSOPmjIfF8');"></div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white" data-lang="project1-title">AI-Powered Data Visualizer</h3>
+<p class="mt-3 text-sm text-gray-600 dark:text-gray-400" data-lang="project1-description">A web application that uses machine learning to generate interactive visualizations from uploaded datasets. Built with React, D3.js, and a Python backend.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">React</span>
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">D3.js</span>
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">Python</span>
+</div>
+</div>
+</div>
+</a>
+<a class="group block" href="#">
+<div class="flex flex-col overflow-hidden rounded-xl border border-gray-200/80 bg-white shadow-md transition-all duration-300 hover:border-primary hover:shadow-2xl dark:border-gray-700/60 dark:bg-card-dark dark:hover:border-primary/70">
+<div class="overflow-hidden">
+<div class="aspect-video w-full bg-cover bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105" data-alt="Abstract representation of code and security concepts" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZrNt84GWNTZzlaZs5KYI6Ox-wHkIUYIRuSboCiojTB7DFX9cvDgMOvbc7gKpuEmr7pKCrDQcsE9URUGGHmGeFo8AW0nvON8arybKUPNe_NrDKkE7sB8UJsVRB-U37gFiYZ_FYauoQwlExn-mUD5AZqSmQCkzvBx2ZUoahQAaDhs2sexKL_yx_8sknQna_pD5Dp1RqFEfkBz_JPUQG0KGCsGMQ-RZYM5URpWFGzEuPyvz0g03SixiRqmFuN9HMGwxtrLoUz0ZL0fE');"></div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white" data-lang="project2-title">E-commerce Platform API</h3>
+<p class="mt-3 text-sm text-gray-600 dark:text-gray-400" data-lang="project2-description">A robust RESTful API for an e-commerce website, featuring product management, user authentication, and order processing. Developed with Node.js, Express, and PostgreSQL.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">Node.js</span>
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">Express</span>
+<span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">PostgreSQL</span>
+</div>
+</div>
+</div>
+</a>
+</div>
+</section>
+<section class="py-24" id="contact">
+<div class="rounded-2xl bg-primary/5 p-8 dark:bg-card-dark/50">
+<div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+<div class="flex flex-col justify-center text-center md:text-left">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl" data-lang="contact-title">Let's Connect!</h2>
+<p class="mt-4 max-w-lg text-base text-gray-600 dark:text-gray-400" data-lang="contact-description">I'm always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out.</p>
+<div class="mt-8 flex flex-col items-center gap-4 md:items-start">
+<a class="group inline-flex items-center gap-3 text-gray-700 transition-colors hover:text-primary dark:text-gray-300 dark:hover:text-primary" href="mailto:Jdeswork1723@gmail.com">
+<span class="material-symbols-outlined rounded-full bg-white p-2 text-primary shadow dark:bg-card-dark">mail</span>
+<span class="font-medium">Jdeswork1723@gmail.com</span>
+</a>
+<div class="flex items-center gap-4">
+<a class="text-gray-500 transition-colors hover:text-primary dark:text-gray-400 dark:hover:text-primary" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.852 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<a class="text-gray-500 transition-colors hover:text-primary dark:text-gray-400 dark:hover:text-primary" href="https://linkedin.com/in/juan-diego-edna-smalbach-b0a750228" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+</svg>
+</a>
+</div>
+</div>
+</div>
+<form id="contact-form" class="space-y-6" method="POST">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="name" data-lang="contact-name">Name</label>
+<div class="mt-1">
+<input autocomplete="name" class="block w-full rounded-md border-gray-300 bg-white shadow-sm focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-background-dark/50 sm:text-sm" id="name" name="name" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="email" data-lang="contact-email">Email</label>
+<div class="mt-1">
+<input autocomplete="email" class="block w-full rounded-md border-gray-300 bg-white shadow-sm focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-background-dark/50 sm:text-sm" id="email" name="email" type="email"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="message" data-lang="contact-message">Message</label>
+<div class="mt-1">
+<textarea class="block w-full rounded-md border-gray-300 bg-white shadow-sm focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-background-dark/50 sm:text-sm" id="message" name="message" rows="4"></textarea>
+</div>
+</div>
+<div>
+<button class="flex w-full justify-center button-3d px-4 py-3 text-sm" type="submit">Send Message</button>
+</div>
+</form>
+</div>
+</div>
+</section>
+</div>
+</main>
+
+<!-- Ejemplo de uso de imagen local desde la carpeta "images" -->
+<section class="py-24 text-center" id="image-example">
+  <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Ejemplo de imagen local</h2>
+  <p class="mt-4 max-w-2xl mx-auto text-base text-gray-600 dark:text-gray-400">A continuación, se muestra cómo insertar una imagen local usando la carpeta "images" en la raíz del proyecto.</p>
+  <!-- Coloque su imagen dentro de la carpeta "images" y cambie "example-image.jpg" por el nombre de su archivo -->
+  <img src="images/example-image.jpg" alt="Imagen de ejemplo" class="mx-auto mt-8 rounded-lg shadow-lg max-w-full h-auto" />
+</section>
+
+<footer class="bg-background-light dark:bg-background-dark border-t border-gray-200/50 dark:border-gray-700/50">
+<div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+<p class="text-center text-sm text-gray-500 dark:text-gray-400">© 2024 Juan Diego Edna. All rights reserved.</p>
+</div>
+</footer>
+</div>
+
+</body></html>

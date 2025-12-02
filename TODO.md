@@ -1,0 +1,6 @@
+- [x] Agregar botón de alternancia de modo oscuro en el header
+- [x] Agregar JavaScript para alternar la clase "dark" en <html>
+- [x] Agregar funcionalidad para cambiar el icono del botón (sol/luna)
+- [x] Probar la funcionalidad en el navegador
+- [x] Configurar envío de correos electrónicos desde el formulario de contacto a ednajuan96@gmail.com
+- [x] Agregar animación y efecto visual al botón de envío del formulario
