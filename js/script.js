@@ -13,11 +13,11 @@ const translations = {
     'about.stat3': 'Certifications<br>Earned', 'about.stat4': 'Dedication<br>&amp; Passion',
     'skills.title': 'Skills & Technologies', 'skills.frontend': 'Frontend', 'skills.backend': 'Backend',
     'skills.databases': 'Databases', 'skills.tools': 'Tools',
-    'projects.title': 'Featured Projects', 'projects.viewGithub': 'View on GitHub', 'projects.liveDemo': 'Live Demo',
+    'projects.title': 'Featured Projects',
     'contractiq.desc': 'Enterprise platform to centralize, manage and automate the contract lifecycle — vendors, contractors, documents and contracts from a single dashboard, with an AI assistant (Ollama + Llama 3.2) that analyzes PDF contracts and extracts key information.',
     'smartops.desc': 'Intelligent platform to optimize inventory, sales and business performance for SMEs, with real-time dashboards, PDF/Excel reports and an AI assistant (Ollama + Llama 3.2) that auto-registers products, analyzes stock risk and gives smart recommendations.',
     'mars.desc': 'Responsive web app to showcase jewelry accessories, with an elegant, mobile-first catalog experience, detailed product views, smooth page navigation and a dynamic JavaScript-driven collection.',
-    'certifications.title': 'Certifications', 'certifications.viewAll': 'View All Certificates',
+    'certifications.title': 'Certifications',
     'education.title': 'Education', 'edu1.degree': "Bachelor's Degree in Systems Engineering",
     'edu2.degree': 'English Program',
     'education.currentlyLearning': 'Currently Learning',
@@ -28,7 +28,9 @@ const translations = {
     'contact.email': 'Email', 'contact.emailPlaceholder': 'your@email.com',
     'contact.message': 'Message', 'contact.messagePlaceholder': 'Tell me about your project...',
     'contact.send': 'Send Message',
-    'contact.formStatus': 'Thanks! Your message has been noted — connect a form service (e.g. Formspree/EmailJS) to receive it by email.',
+    'contact.sending': 'Sending...',
+    'contact.formSuccess': "Thanks! Your message has been sent — I'll get back to you soon.",
+    'contact.formError': 'Something went wrong sending your message. Please try again or email me directly.',
     'footer.rights': 'All rights reserved.',
   },
   es: {
@@ -45,11 +47,11 @@ const translations = {
     'about.stat3': 'Certificaciones<br>Obtenidas', 'about.stat4': 'Dedicación<br>y Pasión',
     'skills.title': 'Habilidades y Tecnologías', 'skills.frontend': 'Frontend', 'skills.backend': 'Backend',
     'skills.databases': 'Bases de Datos', 'skills.tools': 'Herramientas',
-    'projects.title': 'Proyectos Destacados', 'projects.viewGithub': 'Ver en GitHub', 'projects.liveDemo': 'Demo en Vivo',
+    'projects.title': 'Proyectos Destacados',
     'contractiq.desc': 'Plataforma empresarial para centralizar, administrar y automatizar el ciclo de vida de contratos — proveedores, contratistas, documentos y contratos desde un solo panel, con un asistente de IA (Ollama + Llama 3.2) que analiza contratos en PDF y extrae información clave.',
     'smartops.desc': 'Plataforma inteligente para optimizar el inventario, las ventas y el rendimiento del negocio en pymes, con dashboards en tiempo real, reportes en PDF/Excel y un asistente de IA (Ollama + Llama 3.2) que registra productos automáticamente, analiza riesgos de stock y da recomendaciones inteligentes.',
     'mars.desc': 'Aplicación web responsive para la exhibición de accesorios de joyería, con una experiencia de catálogo elegante y mobile-first, vista detallada de cada producto, navegación fluida y un catálogo dinámico generado con JavaScript.',
-    'certifications.title': 'Certificaciones', 'certifications.viewAll': 'Ver Todos los Certificados',
+    'certifications.title': 'Certificaciones',
     'education.title': 'Educación', 'edu1.degree': 'Ingeniería de Sistemas (Pregrado)',
     'edu2.degree': 'Programa de Inglés',
     'education.currentlyLearning': 'Actualmente Aprendiendo',
@@ -60,7 +62,9 @@ const translations = {
     'contact.email': 'Correo', 'contact.emailPlaceholder': 'tu@correo.com',
     'contact.message': 'Mensaje', 'contact.messagePlaceholder': 'Cuéntame sobre tu proyecto...',
     'contact.send': 'Enviar Mensaje',
-    'contact.formStatus': '¡Gracias! Tu mensaje quedó registrado — conecta un servicio de formularios (Formspree/EmailJS) para recibirlo por correo.',
+    'contact.sending': 'Enviando...',
+    'contact.formSuccess': '¡Gracias! Tu mensaje fue enviado — te responderé pronto.',
+    'contact.formError': 'Algo salió mal al enviar tu mensaje. Intenta de nuevo o escríbeme directamente por correo.',
     'footer.rights': 'Todos los derechos reservados.',
   }
 };
@@ -81,6 +85,10 @@ function applyLanguage(lang){
   });
   const langToggle = document.getElementById('langToggle');
   if (langToggle) langToggle.textContent = lang === 'en' ? 'ES' : 'EN';
+  const downloadCvBtn = document.getElementById('downloadCvBtn');
+  if (downloadCvBtn) downloadCvBtn.href = lang === 'es'
+    ? 'imagenes/CV-Juan-Diego-Edna-Smalbach-ES.pdf'
+    : 'imagenes/CV-Juan-Diego-Edna-Smalbach-EN.pdf';
   localStorage.setItem('lang', lang);
 }
 
@@ -113,6 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // fallback in case 'load' already fired or is slow
   setTimeout(() => preloader.classList.add('hidden'), 3000);
 
+  /* ===== Reduced motion preference ===== */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ===== Custom cursor ===== */
   const cursorDot = document.getElementById('cursorDot');
   const cursorOutline = document.getElementById('cursorOutline');
@@ -127,9 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     spotlight.style.setProperty('--y', mouseY + 'px');
   });
 
+  const outlineEase = prefersReducedMotion ? 1 : 0.15;
   function animateOutline(){
-    outlineX += (mouseX - outlineX) * 0.15;
-    outlineY += (mouseY - outlineY) * 0.15;
+    outlineX += (mouseX - outlineX) * outlineEase;
+    outlineY += (mouseY - outlineY) * outlineEase;
     cursorOutline.style.left = outlineX + 'px';
     cursorOutline.style.top = outlineY + 'px';
     requestAnimationFrame(animateOutline);
@@ -156,11 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createParticles(){
     const count = Math.min(80, Math.floor((width * height) / 18000));
+    const speed = prefersReducedMotion ? 0 : 0.3;
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
+      vx: (Math.random() - 0.5) * speed,
+      vy: (Math.random() - 0.5) * speed,
       r: Math.random() * 1.8 + 0.6
     }));
   }
@@ -319,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function next(){ goTo(index + 1); }
     function prev(){ goTo(index - 1); }
 
-    function startAuto(){ timer = setInterval(next, 3500); }
+    function startAuto(){ if (!prefersReducedMotion) timer = setInterval(next, 3500); }
     function stopAuto(){ clearInterval(timer); }
 
     slider.querySelector('.next').addEventListener('click', () => { next(); stopAuto(); startAuto(); });
@@ -333,11 +346,38 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ===== Contact form (front-end demo) ===== */
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const lang = document.documentElement.lang === 'es' ? 'es' : 'en';
-    formStatus.textContent = translations[lang]['contact.formStatus'];
-    contactForm.reset();
+    const submitBtn = contactForm.querySelector('button[type=submit]');
+    const submitLabel = submitBtn.querySelector('[data-i18n="contact.send"]');
+    const originalLabel = submitLabel.textContent;
+
+    submitBtn.disabled = true;
+    submitLabel.textContent = translations[lang]['contact.sending'];
+    formStatus.textContent = '';
+
+    const payload = {
+      name: contactForm.name.value,
+      email: contactForm.email.value,
+      message: contactForm.message.value,
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Request failed');
+      formStatus.textContent = translations[lang]['contact.formSuccess'];
+      contactForm.reset();
+    } catch (err) {
+      formStatus.textContent = translations[lang]['contact.formError'];
+    } finally {
+      submitBtn.disabled = false;
+      submitLabel.textContent = originalLabel;
+    }
   });
 
   /* ===== Footer year ===== */

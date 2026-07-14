@@ -6,6 +6,23 @@
 <title>Juan Diego Edna Smalbach | Frontend Developer</title>
 <meta name="description" content="Portafolio de Juan Diego Edna Smalbach, Frontend Developer y estudiante de Ingeniería de Sistemas.">
 
+<link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="imagenes/favicon-32.png">
+<link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://portajdes.netlify.app/">
+<meta property="og:title" content="Juan Diego Edna Smalbach | Frontend Developer">
+<meta property="og:description" content="Portafolio de Juan Diego Edna Smalbach, Frontend Developer y estudiante de Ingeniería de Sistemas.">
+<meta property="og:image" content="https://portajdes.netlify.app/imagenes/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Juan Diego Edna Smalbach | Frontend Developer">
+<meta name="twitter:description" content="Portafolio de Juan Diego Edna Smalbach, Frontend Developer y estudiante de Ingeniería de Sistemas.">
+<meta name="twitter:image" content="https://portajdes.netlify.app/imagenes/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -85,7 +102,7 @@
         <p class="hero-desc" data-i18n="hero.desc">I build modern, responsive and user-friendly web applications with clean code and great user experience. Passionate about turning ideas into real, functional products.</p>
         <div class="hero-buttons">
           <a href="#projects" class="btn btn-primary"><span data-i18n="hero.viewProjects">View Projects</span> <i class="fa-solid fa-arrow-right"></i></a>
-          <a href="imagenes/CV-Juan-Diego-Edna-Smalbach.pdf" class="btn btn-outline" download><span data-i18n="hero.downloadCV">Download CV</span> <i class="fa-solid fa-download"></i></a>
+          <a href="imagenes/CV-Juan-Diego-Edna-Smalbach-EN.pdf" class="btn btn-outline" id="downloadCvBtn" download><span data-i18n="hero.downloadCV">Download CV</span> <i class="fa-solid fa-download"></i></a>
           <a href="#contact" class="btn btn-outline"><span data-i18n="hero.contactMe">Contact Me</span> <i class="fa-solid fa-envelope"></i></a>
         </div>
         <div class="hero-social">
@@ -198,9 +215,9 @@
           <div class="browser-frame">
             <div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot yellow"></span><span class="browser-dot green"></span></div>
             <div class="project-slider">
-              <div class="slide active"><img src="imagenes/proyectos/contractiq/landing.png" alt="ContractIQ - Landing"></div>
-              <div class="slide"><img src="imagenes/proyectos/contractiq/dashboard.png" alt="ContractIQ - Dashboard"></div>
-              <div class="slide"><img src="imagenes/proyectos/contractiq/proveedores.png" alt="ContractIQ - Proveedores"></div>
+              <div class="slide active"><img src="imagenes/proyectos/contractiq/landing.webp" alt="ContractIQ - Landing"></div>
+              <div class="slide"><img src="imagenes/proyectos/contractiq/dashboard.webp" alt="ContractIQ - Dashboard"></div>
+              <div class="slide"><img src="imagenes/proyectos/contractiq/proveedores.webp" alt="ContractIQ - Proveedores"></div>
               <button class="slider-arrow prev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
               <button class="slider-arrow next" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
               <div class="slider-dots"></div>
@@ -221,9 +238,6 @@
               <span><i class="devicon-nginx-original colored"></i>Nginx</span>
               <span><i class="fa-solid fa-key"></i>JWT</span>
             </div>
-            <div class="project-links">
-              <a href="https://github.com/Juandiego1723123" target="_blank" rel="noopener" class="btn btn-outline btn-sm"><span data-i18n="projects.viewGithub">View on GitHub</span> <i class="fa-brands fa-github"></i></a>
-            </div>
           </div>
         </article>
 
@@ -231,11 +245,11 @@
           <div class="browser-frame">
             <div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot yellow"></span><span class="browser-dot green"></span></div>
             <div class="project-slider">
-              <div class="slide active"><img src="imagenes/proyectos/smartops/inicio.png" alt="SmartOps - Inicio"></div>
-              <div class="slide"><img src="imagenes/proyectos/smartops/dashboard.png" alt="SmartOps - Dashboard"></div>
-              <div class="slide"><img src="imagenes/proyectos/smartops/inventario.png" alt="SmartOps - Inventario"></div>
-              <div class="slide"><img src="imagenes/proyectos/smartops/ventas.png" alt="SmartOps - Ventas"></div>
-              <div class="slide"><img src="imagenes/proyectos/smartops/asistente-ia.png" alt="SmartOps - Asistente IA"></div>
+              <div class="slide active"><img src="imagenes/proyectos/smartops/inicio.webp" alt="SmartOps - Inicio"></div>
+              <div class="slide"><img src="imagenes/proyectos/smartops/dashboard.webp" alt="SmartOps - Dashboard"></div>
+              <div class="slide"><img src="imagenes/proyectos/smartops/inventario.webp" alt="SmartOps - Inventario"></div>
+              <div class="slide"><img src="imagenes/proyectos/smartops/ventas.webp" alt="SmartOps - Ventas"></div>
+              <div class="slide"><img src="imagenes/proyectos/smartops/asistente-ia.webp" alt="SmartOps - Asistente IA"></div>
               <button class="slider-arrow prev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
               <button class="slider-arrow next" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
               <div class="slider-dots"></div>
@@ -255,19 +269,15 @@
               <span><i class="devicon-vercel-original colored"></i>Vercel</span>
               <span><i class="devicon-docker-plain colored"></i>Docker</span>
             </div>
-            <div class="project-links">
-              <a href="#" class="btn btn-primary btn-sm"><span data-i18n="projects.liveDemo">Live Demo</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-              <a href="https://github.com/Juandiego1723123" target="_blank" rel="noopener" class="btn btn-outline btn-sm"><span data-i18n="projects.viewGithub">View on GitHub</span> <i class="fa-brands fa-github"></i></a>
-            </div>
           </div>
         </article>
 
         <article class="project-card reveal">
           <div class="project-slider mobile-app">
-            <div class="slide active"><img src="imagenes/proyectos/mars/inicio.png" alt="Mars - Inicio"></div>
-            <div class="slide"><img src="imagenes/proyectos/mars/catalogo.png" alt="Mars - Catálogo"></div>
-            <div class="slide"><img src="imagenes/proyectos/mars/producto.png" alt="Mars - Detalle de producto"></div>
-            <div class="slide"><img src="imagenes/proyectos/mars/menu.png" alt="Mars - Menú"></div>
+            <div class="slide active"><img src="imagenes/proyectos/mars/inicio.webp" alt="Mars - Inicio"></div>
+            <div class="slide"><img src="imagenes/proyectos/mars/catalogo.webp" alt="Mars - Catálogo"></div>
+            <div class="slide"><img src="imagenes/proyectos/mars/producto.webp" alt="Mars - Detalle de producto"></div>
+            <div class="slide"><img src="imagenes/proyectos/mars/menu.webp" alt="Mars - Menú"></div>
             <button class="slider-arrow prev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="slider-arrow next" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
             <div class="slider-dots"></div>
@@ -282,9 +292,6 @@
               <span><i class="devicon-tailwindcss-plain colored"></i>Tailwind CSS</span>
               <span><i class="fa-brands fa-google"></i>Google Fonts</span>
               <span><i class="fa-solid fa-icons"></i>Material Symbols</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Juandiego1723123" target="_blank" rel="noopener" class="btn btn-outline btn-sm"><span data-i18n="projects.viewGithub">View on GitHub</span> <i class="fa-brands fa-github"></i></a>
             </div>
           </div>
         </article>
@@ -322,7 +329,6 @@
               </div>
             </div>
           </div>
-          <a href="#" class="btn btn-outline btn-sm cert-view-all" data-i18n="certifications.viewAll">View All Certificates</a>
         </div>
 
         <div id="education">

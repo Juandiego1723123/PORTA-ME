@@ -60,6 +60,19 @@ ul{ list-style:none; }
   .cursor-dot, .cursor-outline, .spotlight{ display:none; }
 }
 
+/* Respect reduced-motion preference: kill animations/transitions, show content as-is */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html{ scroll-behavior:auto; }
+  .reveal{ opacity:1; transform:none; }
+  .photo-frame{ animation:none; }
+  .scroll-indicator{ animation:none; }
+}
+
 /* ===== Language gate ===== */
 .lang-gate{
   position:fixed; inset:0; z-index:10000;
@@ -323,7 +336,6 @@ ul{ list-style:none; }
   display:flex; align-items:center; gap:.35rem; font-size:.72rem; padding:.3rem .6rem;
   border:1px solid var(--border); border-radius:6px; color:var(--text-dim);
 }
-.project-links{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:auto; padding-top:.5rem; }
 
 /* Certifications & Education */
 .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:4rem; }
@@ -339,7 +351,6 @@ ul{ list-style:none; }
 }
 .cert-card h4{ font-size:.98rem; margin-bottom:.2rem; }
 .cert-card p{ font-size:.8rem; color:var(--text-dim); }
-.cert-view-all{ margin-top:.4rem; }
 
 .timeline{ position:relative; padding-left:2rem; margin-bottom:2rem; }
 .timeline::before{ content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--primary), transparent); }
