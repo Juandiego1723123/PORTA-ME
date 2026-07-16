@@ -34,6 +34,8 @@
 
 *{ margin:0; padding:0; box-sizing:border-box; }
 
+::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
+
 html{ scroll-behavior:smooth; scroll-padding-top: var(--nav-h); }
 
 body{
@@ -144,7 +146,15 @@ ul{ list-style:none; }
 /* ===== Particles ===== */
 #particles{ position:fixed; inset:0; z-index:0; }
 
-/* content sits above particles/spotlight */
+/* ===== Grain texture ===== */
+.grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  opacity:.035; mix-blend-mode:overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme="light"] .grain{ opacity:.05; mix-blend-mode:multiply; }
+
+/* content sits above particles/spotlight/grain */
 .navbar, main, .footer, .back-to-top{ position:relative; z-index:2; }
 
 /* ===== Reveal animation ===== */
@@ -165,6 +175,11 @@ ul{ list-style:none; }
   box-shadow: 0 4px 30px rgba(0,0,0,.25);
 }
 [data-theme="light"] .navbar.scrolled{ background: rgba(255,255,255,0.75); }
+
+.scroll-progress{
+  position:absolute; left:0; bottom:-1px; height:2px; width:0%;
+  background:var(--gradient); transition:width .15s linear;
+}
 
 .nav-container{
   max-width:1280px; margin:0 auto; padding:0 2rem; height:100%;
@@ -282,12 +297,27 @@ ul{ list-style:none; }
   display:flex; flex-direction:column; align-items:center; gap:.5rem; width:80px; padding:1rem .5rem;
   background:var(--card); border:1px solid var(--border); border-radius:12px;
   font-size:.72rem; color:var(--text-dim); transition: all var(--transition);
+  opacity:0; transform:translateY(14px);
 }
 .skill-item i{ font-size:1.8rem; color:var(--text); }
 .skill-item:hover{ transform:translateY(-6px) scale(1.05); border-color:var(--border-strong); box-shadow:var(--shadow-glow); color:var(--text); }
 
+.skill-group.visible .skill-item{ animation: skillIn .5s ease forwards; }
+.skill-group.visible .skill-item:nth-child(1){ animation-delay:0ms; }
+.skill-group.visible .skill-item:nth-child(2){ animation-delay:60ms; }
+.skill-group.visible .skill-item:nth-child(3){ animation-delay:120ms; }
+.skill-group.visible .skill-item:nth-child(4){ animation-delay:180ms; }
+.skill-group.visible .skill-item:nth-child(5){ animation-delay:240ms; }
+.skill-group.visible .skill-item:nth-child(6){ animation-delay:300ms; }
+.skill-group.visible .skill-item:nth-child(7){ animation-delay:360ms; }
+.skill-group.visible .skill-item:nth-child(8){ animation-delay:420ms; }
+@keyframes skillIn{ to{ opacity:1; transform:none; } }
+
 /* Projects */
 .projects-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.8rem; align-items:stretch; }
+.projects-grid .project-card:nth-child(1){ transition-delay:0ms; }
+.projects-grid .project-card:nth-child(2){ transition-delay:120ms; }
+.projects-grid .project-card:nth-child(3){ transition-delay:240ms; }
 .project-card{
   display:flex; flex-direction:column;
   background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
@@ -311,7 +341,8 @@ ul{ list-style:none; }
   opacity:0; transition: opacity .6s ease;
 }
 .slide.active{ opacity:1; }
-.slide img{ width:100%; height:100%; object-fit:cover; object-position:top; }
+.slide img{ width:100%; height:100%; object-fit:cover; object-position:top; transition: transform .5s ease; }
+.project-slider:hover img{ transform:scale(1.06); }
 .project-slider.mobile-app{ aspect-ratio:3/4; background:#000; }
 .project-slider.mobile-app .slide{ background:#000; }
 .project-slider.mobile-app .slide img{ object-fit:contain; padding:.6rem 0; }
@@ -331,7 +362,7 @@ ul{ list-style:none; }
 .project-body{ padding:1.4rem; display:flex; flex-direction:column; flex:1; }
 .project-body h3{ font-size:1.2rem; margin-bottom:.6rem; color:var(--primary-light); }
 .project-body p{ color:var(--text-dim); font-size:.88rem; line-height:1.6; margin-bottom:1rem; }
-.tech-badges{ display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.2rem; }
+.tech-badges{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:auto; padding-top:1rem; }
 .tech-badges span{
   display:flex; align-items:center; gap:.35rem; font-size:.72rem; padding:.3rem .6rem;
   border:1px solid var(--border); border-radius:6px; color:var(--text-dim);
@@ -339,18 +370,25 @@ ul{ list-style:none; }
 
 /* Certifications & Education */
 .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:4rem; }
-.cert-list{ display:flex; flex-direction:column; gap:1rem; margin-bottom:1.2rem; }
+.cert-list{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1.2rem; margin-bottom:1.2rem; }
 .cert-card{
-  display:flex; align-items:center; gap:1rem; background:var(--card); border:1px solid var(--border);
-  border-radius:14px; padding:1.1rem; transition: all var(--transition);
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:.5rem;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:1.8rem 1rem 1.3rem; transition: all var(--transition);
 }
-.cert-card:hover{ transform:translateX(6px); border-color:var(--border-strong); box-shadow:var(--shadow-glow); }
+.cert-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); box-shadow:var(--shadow-glow); }
 .cert-icon{
-  width:44px; height:44px; flex-shrink:0; border-radius:50%; background:var(--gradient);
-  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem;
+  width:56px; height:56px; flex-shrink:0; border-radius:50%; background:var(--gradient);
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem;
+  position:relative; margin-bottom:.6rem;
+  box-shadow: 0 0 0 4px var(--card), 0 0 0 5px var(--border-strong), 0 10px 22px rgba(249,115,22,.3);
 }
-.cert-card h4{ font-size:.98rem; margin-bottom:.2rem; }
-.cert-card p{ font-size:.8rem; color:var(--text-dim); }
+.cert-icon::after{
+  content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border-left:7px solid transparent; border-right:7px solid transparent; border-top:11px solid var(--primary-dark);
+}
+.cert-card h4{ font-size:.92rem; margin-bottom:.2rem; }
+.cert-card p{ font-size:.76rem; color:var(--text-dim); }
 
 .timeline{ position:relative; padding-left:2rem; margin-bottom:2rem; }
 .timeline::before{ content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--primary), transparent); }

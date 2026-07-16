@@ -232,6 +232,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('backToTop').classList.toggle('show', window.scrollY > 500);
+
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+    document.getElementById('scrollProgress').style.width = progress + '%';
   }
   window.addEventListener('scroll', onScroll);
   onScroll();
@@ -254,15 +258,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   setTheme(savedTheme);
 
-  themeToggle.addEventListener('click', () => {
+  themeToggle.addEventListener('click', (e) => {
     const next = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    setTheme(next);
+    switchTheme(next, e.clientX, e.clientY);
     localStorage.setItem('theme', next);
   });
 
   function setTheme(theme){
     document.body.setAttribute('data-theme', theme);
     themeIcon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  }
+
+  function switchTheme(theme, x, y){
+    if (prefersReducedMotion || !document.startViewTransition){
+      setTheme(theme);
+      return;
+    }
+    const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const transition = document.startViewTransition(() => setTheme(theme));
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
+        { duration: 550, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
   }
 
   /* ===== Scroll reveal ===== */
