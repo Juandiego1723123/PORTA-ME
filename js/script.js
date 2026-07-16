@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ===== Preloader ===== */
   const preloader = document.getElementById('preloader');
   window.addEventListener('load', () => {
-    setTimeout(() => preloader.classList.add('hidden'), 1200);
+    setTimeout(() => preloader.classList.add('hidden'), 400);
   });
   // fallback in case 'load' already fired or is slow
-  setTimeout(() => preloader.classList.add('hidden'), 3000);
+  setTimeout(() => preloader.classList.add('hidden'), 1500);
 
   /* ===== Reduced motion preference ===== */
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -132,14 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX; mouseY = e.clientY;
+  }, { passive: true });
+
+  const outlineEase = prefersReducedMotion ? 1 : 0.15;
+  function animateOutline(){
     cursorDot.style.left = mouseX + 'px';
     cursorDot.style.top = mouseY + 'px';
     spotlight.style.setProperty('--x', mouseX + 'px');
     spotlight.style.setProperty('--y', mouseY + 'px');
-  });
-
-  const outlineEase = prefersReducedMotion ? 1 : 0.15;
-  function animateOutline(){
     outlineX += (mouseX - outlineX) * outlineEase;
     outlineY += (mouseY - outlineY) * outlineEase;
     cursorOutline.style.left = outlineX + 'px';
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', resizeCanvas);
 
   function createParticles(){
-    const count = Math.min(80, Math.floor((width * height) / 18000));
+    const count = Math.min(45, Math.floor((width * height) / 28000));
     const speed = prefersReducedMotion ? 0 : 0.3;
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
@@ -199,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < particles.length; i++){
       for (let j = i + 1; j < particles.length; j++){
         const dx = particles[i].x - particles[j].x;
+        if (dx > 120 || dx < -120) continue;
         const dy = particles[i].y - particles[j].y;
+        if (dy > 120 || dy < -120) continue;
         const dist = Math.sqrt(dx*dx + dy*dy);
         if (dist < 120){
           ctx.beginPath();
@@ -211,14 +213,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    requestAnimationFrame(drawParticles);
+    particlesFrame = requestAnimationFrame(drawParticles);
   }
-  drawParticles();
+  let particlesFrame = requestAnimationFrame(drawParticles);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden){
+      cancelAnimationFrame(particlesFrame);
+    } else {
+      particlesFrame = requestAnimationFrame(drawParticles);
+    }
+  });
 
   /* ===== Navbar scroll state + active link ===== */
   const navbar = document.getElementById('navbar');
   const sections = document.querySelectorAll('main section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
+  const backToTop = document.getElementById('backToTop');
+  const scrollProgress = document.getElementById('scrollProgress');
 
   function onScroll(){
     navbar.classList.toggle('scrolled', window.scrollY > 40);
@@ -231,13 +243,18 @@ document.addEventListener('DOMContentLoaded', () => {
       link.classList.toggle('active', link.getAttribute('href') === '#' + current);
     });
 
-    document.getElementById('backToTop').classList.toggle('show', window.scrollY > 500);
+    backToTop.classList.toggle('show', window.scrollY > 500);
 
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-    document.getElementById('scrollProgress').style.width = progress + '%';
+    scrollProgress.style.width = progress + '%';
   }
-  window.addEventListener('scroll', onScroll);
+  let scrollScheduled = false;
+  window.addEventListener('scroll', () => {
+    if (scrollScheduled) return;
+    scrollScheduled = true;
+    requestAnimationFrame(() => { onScroll(); scrollScheduled = false; });
+  }, { passive: true });
   onScroll();
 
   /* ===== Mobile menu ===== */
