@@ -127,12 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ===== Custom cursor ===== */
   const cursorDot = document.getElementById('cursorDot');
   const spotlight = document.getElementById('spotlight');
+  let mouseX = 0, mouseY = 0, cursorTicking = false;
 
   window.addEventListener('mousemove', (e) => {
-    cursorDot.style.left = e.clientX + 'px';
-    cursorDot.style.top = e.clientY + 'px';
-    spotlight.style.setProperty('--x', e.clientX + 'px');
-    spotlight.style.setProperty('--y', e.clientY + 'px');
+    mouseX = e.clientX; mouseY = e.clientY;
+    if (cursorTicking) return;
+    cursorTicking = true;
+    requestAnimationFrame(() => {
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+      spotlight.style.setProperty('--x', mouseX + 'px');
+      spotlight.style.setProperty('--y', mouseY + 'px');
+      cursorTicking = false;
+    });
   }, { passive: true });
 
   /* ===== Particles background ===== */
@@ -149,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', resizeCanvas);
 
   function createParticles(){
-    const count = Math.min(45, Math.floor((width * height) / 28000));
+    const count = Math.min(28, Math.floor((width * height) / 42000));
     const speed = prefersReducedMotion ? 0 : 0.3;
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
@@ -163,11 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', createParticles);
 
   const isLight = () => document.body.getAttribute('data-theme') === 'light';
+  let particlesFrame, skipFrame = false;
 
   function drawParticles(){
+    particlesFrame = requestAnimationFrame(drawParticles);
+    // render at ~30fps instead of 60fps — these dots drift slowly, no visible difference
+    skipFrame = !skipFrame;
+    if (skipFrame) return;
+
     ctx.clearRect(0, 0, width, height);
     const dotColor = isLight() ? 'rgba(234,88,12,0.35)' : 'rgba(251,146,60,0.5)';
-    const lineColor = isLight() ? 'rgba(234,88,12,' : 'rgba(249,115,22,';
 
     for (const p of particles){
       p.x += p.vx; p.y += p.vy;
@@ -178,26 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = dotColor;
       ctx.fill();
     }
-    for (let i = 0; i < particles.length; i++){
-      for (let j = i + 1; j < particles.length; j++){
-        const dx = particles[i].x - particles[j].x;
-        if (dx > 120 || dx < -120) continue;
-        const dy = particles[i].y - particles[j].y;
-        if (dy > 120 || dy < -120) continue;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 120){
-          ctx.beginPath();
-          ctx.strokeStyle = lineColor + (1 - dist / 120) * 0.15 + ')';
-          ctx.lineWidth = 1;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-    particlesFrame = requestAnimationFrame(drawParticles);
   }
-  let particlesFrame = requestAnimationFrame(drawParticles);
+  particlesFrame = requestAnimationFrame(drawParticles);
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden){
