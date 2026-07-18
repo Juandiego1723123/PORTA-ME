@@ -9,7 +9,13 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { name, email, message } = req.body || {};
+  const { name, email, message, company } = req.body || {};
+
+  // Honeypot: real users never fill this hidden field. Pretend success so bots don't retry.
+  if (company) {
+    res.status(200).json({ ok: true });
+    return;
+  }
 
   if (!name || !email || !message) {
     res.status(400).json({ error: 'Missing required fields' });

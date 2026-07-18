@@ -59,7 +59,7 @@ ul{ list-style:none; }
 /* Hide custom cursor / re-enable default on touch devices */
 @media (hover:none), (pointer:coarse){
   body, button, a{ cursor:auto; }
-  .cursor-dot, .cursor-outline, .spotlight{ display:none; }
+  .cursor-dot, .spotlight{ display:none; }
 }
 
 /* Respect reduced-motion preference: kill animations/transitions, show content as-is */
@@ -129,13 +129,11 @@ ul{ list-style:none; }
 @keyframes loadProgress{ to{ width:100%; } }
 
 /* ===== Custom cursor ===== */
-.cursor-dot, .cursor-outline{
+.cursor-dot{
   position:fixed; top:0; left:0; border-radius:50%; pointer-events:none; z-index:10002;
   transform:translate(-50%,-50%);
+  width:14px; height:14px; background: var(--primary-light);
 }
-.cursor-dot{ width:8px; height:8px; background: var(--primary-light); }
-.cursor-outline{ width:36px; height:36px; border:1.5px solid var(--border-strong); transition: width .2s, height .2s, background .2s; }
-.cursor-outline.grow{ width:56px; height:56px; background: rgba(249,115,22,0.12); }
 
 /* ===== Spotlight ===== */
 .spotlight{
@@ -415,6 +413,7 @@ ul{ list-style:none; }
 .contact-sub{ text-align:center; color:var(--text-dim); max-width:520px; margin:0 auto 3rem; }
 .contact-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:3rem; max-width:1000px; margin:0 auto; }
 .form-group{ margin-bottom:1.2rem; }
+.hp-field{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .form-group label{ display:block; font-size:.85rem; margin-bottom:.5rem; color:var(--text-dim); }
 .form-group input, .form-group textarea{
   width:100%; padding:.85rem 1rem; background:var(--card); border:1px solid var(--border); border-radius:10px;

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portafolio-jdes.vercel.app/sitemap.xml

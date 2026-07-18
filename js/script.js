@@ -126,32 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ===== Custom cursor ===== */
   const cursorDot = document.getElementById('cursorDot');
-  const cursorOutline = document.getElementById('cursorOutline');
   const spotlight = document.getElementById('spotlight');
-  let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
 
   window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX; mouseY = e.clientY;
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    spotlight.style.setProperty('--x', e.clientX + 'px');
+    spotlight.style.setProperty('--y', e.clientY + 'px');
   }, { passive: true });
-
-  const outlineEase = prefersReducedMotion ? 1 : 0.15;
-  function animateOutline(){
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
-    spotlight.style.setProperty('--x', mouseX + 'px');
-    spotlight.style.setProperty('--y', mouseY + 'px');
-    outlineX += (mouseX - outlineX) * outlineEase;
-    outlineY += (mouseY - outlineY) * outlineEase;
-    cursorOutline.style.left = outlineX + 'px';
-    cursorOutline.style.top = outlineY + 'px';
-    requestAnimationFrame(animateOutline);
-  }
-  animateOutline();
-
-  document.querySelectorAll('a, button, .skill-item, .project-card, input, textarea').forEach(el => {
-    el.addEventListener('mouseenter', () => cursorOutline.classList.add('grow'));
-    el.addEventListener('mouseleave', () => cursorOutline.classList.remove('grow'));
-  });
 
   /* ===== Particles background ===== */
   const canvas = document.getElementById('particles');
@@ -397,6 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: contactForm.name.value,
       email: contactForm.email.value,
       message: contactForm.message.value,
+      company: contactForm.company.value,
     };
 
     try {
